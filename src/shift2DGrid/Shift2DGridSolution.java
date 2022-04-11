@@ -8,15 +8,59 @@ public class Shift2DGridSolution {
 	public static void main(String[] args) {
 		//int[][] test1 = {{1,2,3},{4,5,6},{7,8,9}};
 		//List<List<Integer>> result1 = shiftGrid(test1, 2);
-		//int[][] test2 = {{1}};
+		int[][] test2 = {{1}};
 		//List<List<Integer>> result2 = shiftGrid(test2, 5);
 		int[][] test3 = {{1},{2},{3},{4},{7},{6},{5}};
 		List<List<Integer>> result3 = shiftGrid(test3, 5);
+		List<List<Integer>> result3Lin = shiftGrid(test3, 5);
+		List<List<Integer>> result2Lin = shiftGrid(test2, 5);
 		//printMatrix(result1);
 		//printMatrix(result2);
 		printMatrix(result3);
+		System.out.println("-------");
+		printMatrix(result3Lin);
+		System.out.println("-------");
+		printMatrix(result2Lin);
 	}
 	
+	public static List<List<Integer>> shiftGrid(int[][] grid, int k) {
+		int n = grid.length;
+		List<Integer> numList = new ArrayList<>();
+		for(int i = 0; i < grid.length; i++) {
+			for(int j = 0; j < grid[i].length; j++) {
+				numList.add(grid[i][j]);
+			}
+		}
+		List<Integer> resultAsList = shiftGridLinearly(numList, k);
+		List<List<Integer>> resultAsMatrix = new ArrayList<>();
+		for(int i = 0; i < grid.length; i++) {
+			resultAsMatrix.add(new ArrayList<Integer>());
+			for(int j = 0; j < grid[i].length; j++) {
+				resultAsMatrix.get(i).add(resultAsList.get(j + (i * grid[i].length)));
+			}
+		}
+		
+		return resultAsMatrix;
+	}
+	
+	public static List<Integer> shiftGridLinearly(List<Integer> numList, int k){
+		if(k <= 0) {
+			return numList;
+		}
+		List<Integer> resultAsList = new ArrayList<>();
+		if(k > numList.size()) {
+			k = k % numList.size();
+		}
+		for(int i = numList.size() - k; i < numList.size(); i++) {
+			resultAsList.add(numList.get(i));
+		}
+		for(int i = 0; i < numList.size() - k; i++) {
+			resultAsList.add(numList.get(i));
+		}
+		return resultAsList;
+	}
+	/*
+	 * I didn't want to use a recursive solution as it was less efficient
 	public static List<List<Integer>> shiftGrid(int[][] grid, int k) {
 		int n = grid.length;
 		List<Integer> numList = new ArrayList<>();
@@ -49,6 +93,9 @@ public class Shift2DGridSolution {
 		}
 		return shiftGridRecursively(resultAsList, k - 1);
 	}
+	*/
+	
+	
 	
 	public static void printMatrix(List<List<Integer>> arr) {
 		for(int i = 0; i < arr.size(); i++) {
